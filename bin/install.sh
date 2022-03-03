@@ -42,6 +42,7 @@ base_min() {
 	apt -y upgrade
 
 	apt install -y \
+        ca-certificates \
         git \
 		make \
 		--no-install-recommends
@@ -91,7 +92,6 @@ main() {
 
     if [[ $cmd == "basemin" ]]; then
         check_is_sudo
-
         base_min
     elif [[ $cmd == "dotfiles" ]]; then
         get_user
