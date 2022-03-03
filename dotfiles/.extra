@@ -1,0 +1,17 @@
+###
+### Git credentials
+###
+
+GIT_AUTHOR_NAME="tdemeester"
+GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+git config --global user.name "$GIT_AUTHOR_NAME"
+GIT_AUTHOR_EMAIL="git@demeester.dev"
+GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+git config --global user.email "$GIT_AUTHOR_EMAIL"
+GH_USER="demeesterdev"
+git config --global github.user "$GH_USER"
+
+if grep -q Microsoft /proc/version; then
+  git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe"
+  git config --global credential.https://dev.azure.com.useHttpPath true
+fi
