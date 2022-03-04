@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Call from a local repo to open the repository on github/bitbucket in browser
 # Modified version of https://github.com/zeke/ghwd
 repo() {

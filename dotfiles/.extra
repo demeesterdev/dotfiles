@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ###
 ### Git credentials
 ###
@@ -11,7 +13,10 @@ git config --global user.email "$GIT_AUTHOR_EMAIL"
 GH_USER="demeesterdev"
 git config --global github.user "$GH_USER"
 
+
+# wsl configuration
 if grep -q Microsoft /proc/version; then
   git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe"
   git config --global credential.https://dev.azure.com.useHttpPath true
 fi
+

@@ -14,7 +14,8 @@ get_user() {
 		# if there is only one option just use that user
 		if [ "${#options[@]}" -eq "1" ]; then
 			readonly TARGET_USER="${options[0]}"
-			echo "Using user account: ${TARGET_USER}"
+			readonly TARGET_UID=$(getent passwd "$TARGET_USER" | cut -d: -f3)
+            readonly TARGET_HOME=$(getent passwd "$TARGET_USER" | cut -d: -f6)
 			return
 		fi
 
@@ -54,7 +55,9 @@ base_min() {
 
 get_dotfiles() {
     # create subshell
+	
     (   
+		export HOME=$TARGET_HOME
         cd "$HOME"
 
         if [[ ! -d "${HOME}/.dotfiles" ]]; then
@@ -102,6 +105,9 @@ main() {
 	    echo "gathering Info..."
 	    echo
         get_user
+		echo "Using user account: ${TARGET_USER}"
+		echo "             UID  : ${TARGET_UID}"
+		echo "             home : ${TARGET_HOME}"
 
         #install packages
         echo
@@ -113,8 +119,7 @@ main() {
         echo
 	    echo "Installing dotfiles..."
 	    echo
-        export -f get_dotfiles 
-        su $TARGET_USER -c 'bash -c get_dotfiles'
+		get_dotfiles
     else
 		usage
 	fi
