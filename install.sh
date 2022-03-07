@@ -44,6 +44,7 @@ base_min() {
 
 	apt install -y \
         ca-certificates \
+		bash-completion \
         git \
 		make \
 		--no-install-recommends

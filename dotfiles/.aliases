@@ -14,3 +14,8 @@ alias clone="git -C ~/development clone"
 
 # allow aliases to be sudod
 alias sudo='sudo '
+
+# IP addresses
+alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
+
+alias resource="source ~/.bashrc"
