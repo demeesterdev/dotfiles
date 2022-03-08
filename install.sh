@@ -43,11 +43,31 @@ base_min() {
     apt -y upgrade
 
     apt install -y \
-        ca-certificates \
+        adduser \
         bash-completion \
+		coreutils \
+        ca-certificates \
+        findutils \
+        grep \
+        hostname \
         git \
         make \
         dnsutils \
+        iptables \
+        jq \
+        less \
+        lsof \
+        mount \
+        net-tools \
+		silversearcher-ag \
+		ssh \
+		strace \
+		sudo \
+		tar \
+		tree \
+		unzip \
+		xz-utils \
+		zip \
         --no-install-recommends
 
     apt autoremove -y
