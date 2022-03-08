@@ -47,7 +47,7 @@ base_min() {
         bash-completion \
         git \
         make \
-        dig \
+        dnsutils \
         --no-install-recommends
 
     apt autoremove -y
