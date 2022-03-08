@@ -45,7 +45,7 @@ base_min() {
     apt install -y \
         adduser \
         bash-completion \
-		coreutils \
+        coreutils \
         ca-certificates \
         findutils \
         grep \
@@ -59,15 +59,15 @@ base_min() {
         lsof \
         mount \
         net-tools \
-		silversearcher-ag \
-		ssh \
-		strace \
-		sudo \
-		tar \
-		tree \
-		unzip \
-		xz-utils \
-		zip \
+        silversearcher-ag \
+        ssh \
+        strace \
+        sudo \
+        tar \
+        tree \
+        unzip \
+        xz-utils \
+        zip \
         --no-install-recommends
 
     apt autoremove -y
