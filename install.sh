@@ -98,7 +98,7 @@ get_dotfiles() {
 }
 
 reset_dotfiles_owner() {
-    if [ "$EUID" -ne 0 ]; then
+    if [ "$EUID" -eq 0 ]; then
         echo "running as root resetting ownership of dotfiles"
         find $TARGET_HOME ! -user $TARGET_USER -exec chown -h $TARGET_USER. {} \;
     fi
