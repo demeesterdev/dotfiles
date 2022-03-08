@@ -47,6 +47,7 @@ base_min() {
 		bash-completion \
         git \
 		make \
+		dig \
 		--no-install-recommends
 
 	apt autoremove -y
