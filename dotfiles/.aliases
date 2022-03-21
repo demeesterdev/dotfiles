@@ -16,6 +16,6 @@ alias clone="git -C ~/development clone"
 alias sudo='sudo '
 
 # IP addresses
-alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias pubip="curl -s https://api.ipify.org"
 
 alias resource="source ~/.bashrc"
