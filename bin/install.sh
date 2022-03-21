@@ -51,6 +51,8 @@ base_min() {
         grep \
         hostname \
         git \
+		gnupg \
+		gnupg2 \
         make \
         dnsutils \
         iptables \
