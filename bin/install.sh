@@ -51,8 +51,8 @@ base_min() {
         grep \
         hostname \
         git \
-		gnupg \
-		gnupg2 \
+        gnupg \
+        gnupg2 \
         make \
         dnsutils \
         iptables \
@@ -84,12 +84,12 @@ get_dotfiles() {
         export HOME=$TARGET_HOME
         cd "$HOME"
 
-        if [[ ! -d "${HOME}/.dotfiles" ]]; then
+        if [[ ! -d "${HOME}/dotfiles" ]]; then
         # install dotfiles from repo
-            git clone https://github.com/demeesterdev/dotfiles.git "${HOME}/.dotfiles"
+            git clone https://github.com/demeesterdev/dotfiles.git "${HOME}/dotfiles"
         fi
 
-        cd "${HOME}/.dotfiles"
+        cd "${HOME}/dotfiles"
 
         # set the correct origin
         git remote set-url origin git@github.com:demeesterdev/dotfiles.git
