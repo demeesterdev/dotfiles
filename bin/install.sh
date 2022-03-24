@@ -48,6 +48,7 @@ base_min() {
         coreutils \
         ca-certificates \
         curl \
+        wget \
         findutils \
         grep \
         hostname \
