@@ -47,6 +47,7 @@ base_min() {
         bash-completion \
         coreutils \
         ca-certificates \
+        curl \
         findutils \
         grep \
         hostname \
