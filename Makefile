@@ -6,7 +6,7 @@ all: bin dotfiles
 .PHONY: bin
 bin: ## Installs the bin directory files
 	# add aliases for things in bin 
-	mkdir "$(HOME)/bin" 2>/dev/null ;\
+	mkdir -m 700 -p "$(HOME)/bin" ;\
 	for file in $(shell find $(CURDIR)/bin -type f ); do \
 		f=$$(basename $$file); \
 		ln -sf $$file $(HOME)/bin/$$f; \
@@ -14,7 +14,12 @@ bin: ## Installs the bin directory files
 
 .PHONY: dotfiles
 dotfiles: ## Installs the dotfiles
-	for file in $(shell find $(CURDIR)/dotfiles -name ".*"); do \
+	for file in $(shell find $(CURDIR)/dotfiles -type f -name "**.*"); do \
+		p=$$(realpath --relative-to="$(CURDIR)/dotfiles" $$file); \
+		d=$$(dirname $$p); \
 		f=$$(basename $$file); \
-		ln -sfn $$file $(HOME)/$$f; \
+		if [ $$d != '.' ] && [ ! -d $$d ]; then \
+			mkdir -m 700 -p $(HOME)/$$d; \
+	    fi; \
+		ln -sfn $$file $(HOME)/$$p; \
 	done;
