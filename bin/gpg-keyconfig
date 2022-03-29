@@ -1,0 +1,80 @@
+#!/bin/bash
+##############################################################################
+# keyconfig
+# -----------
+# Installs and configures gpg keys on machine from bitwarden
+#
+# Usage:
+#       keyconfig
+#
+# :authors: Thijs De Meester, @demeesterdev
+# :date: 2022-03-29
+# :version: 0.0.1
+##############################################################################
+
+KEYITEMNAME=pgp
+FIELD_FINGERPRINT_NAME=fingerprint
+ATTACHMENT_SECRET_KEYS=secret-keys.gpg
+ATTACHMENT_SECRET_SUBKEYS=secret-subkeys.gpg
+ATTACHMENT_PUBLIC_KEYS=public-keys.gpg
+
+check_bw_status() {
+    bw_status=$(bw status | jq -r '.status')
+    if [[ $bw_status == "unauthenticated" ]]; then
+        echo "Set the BW_SESSION env variable. run 'bw login' to retrieve it";
+        echo 'Or to set it in one go run `export BW_SESSION=$(bw login --raw)`';
+        exit 1
+    elif [[ $bw_status == 'locked' ]]; then 
+        echo "Set the BW_SESSION env variable. run 'bw unlock' to retrieve it";
+        echo 'Or to set it in one go run `export BW_SESSION=$(bw unlock --raw)`';
+        exit 1;
+    fi
+}
+
+install_keys() {
+    itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
+    bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import 
+    bw get attachment $ATTACHMENT_SECRET_SUBKEYS --itemid $itemid --raw | gpg --import 
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "fingerprint") | .value')
+    echo "${fingerprint}:6:" | gpg --import-ownertrust
+}
+
+install_key_full() {
+    itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
+    bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import
+    bw get attachment $ATTACHMENT_SECRET_KEYS --itemid $itemid --raw | gpg --import 
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "fingerprint") | .value')
+    echo "${fingerprint}:6:" | gpg --import-ownertrust
+}
+
+usage() {
+    echo -e "keyconfig\\n\\tThis script simplifies my key management\\n"
+    echo "Usage:"
+    echo "  install-keys                        - install public keys and private subkeys from bitwarden"
+    echo "  install-key-full                    - install the full key private and public from bitwarden"
+    echo "  sync                                - uploads all available keys to bitwarden"
+}
+
+
+main() {
+    local cmd=$1
+
+    if [[ -z "$cmd" ]]; then
+        usage
+        exit 1
+    fi
+    
+    if [[ $cmd == "install-keys" ]]; then
+        check_bw_status
+        install_keys
+    elif [[ $cmd == "install-key-full" ]]; then
+        check_bw_status
+        install_key_full
+    elif [[ $cmd == "sync" ]]; then
+        check_bw_status
+        usage
+    else
+        usage
+    fi
+}
+main "$@"

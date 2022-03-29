@@ -43,6 +43,7 @@ base_min() {
     apt -y upgrade
 
     apt install -y \
+        man-db \
         adduser \
         bash-completion \
         coreutils \
@@ -77,6 +78,23 @@ base_min() {
     apt autoremove -y
     apt autoclean -y
     apt clean -y
+}
+
+install_bw_cli() {
+    export HOME=$TARGET_HOME
+    TMP_DIR=$(mktemp -d)
+    ZIPNAME=bw.zip
+    EXENAME=bw
+
+    # download and unzip binary
+    curl -sSL 'https://vault.bitwarden.com/download/?app=cli&platform=linux' -o "${TMP_DIR}/${ZIPNAME}"
+    unzip -qq -d "${TMP_DIR}" "${TMP_DIR}/${ZIPNAME}"
+
+    #move binary and make executable
+    chmod +x "${TMP_DIR}/${EXENAME}"
+    mkdir -m 700 -p "${HOME}/bin"
+    mv "${TMP_DIR}/${EXENAME}" "${HOME}/bin"
+
 }
 
 get_dotfiles() {
@@ -116,6 +134,7 @@ usage() {
     echo "  basemin                             - install base min pkgs"
     echo "  dotfiles                            - install dotfiles on system"
     echo "  fresh                               - install and configure dotfiles on a new machine"
+    echo "  bw                                  - install bitwarden cli"
 }
 
 main() {
@@ -132,6 +151,10 @@ main() {
     elif [[ $cmd == "dotfiles" ]]; then
         get_user
         get_dotfiles
+        reset_dotfiles_owner
+    elif [[ $cmd == "bw" ]]; then
+        get_user
+        install_bw_cli
     elif [[ $cmd == "fresh" ]]; then
         check_is_sudo
         echo
