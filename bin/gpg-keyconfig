@@ -19,6 +19,11 @@ ATTACHMENT_SECRET_SUBKEYS=secret-subkeys.gpg
 ATTACHMENT_PUBLIC_KEYS=public-keys.gpg
 
 check_bw_status() {
+    if ! command -v bw &> /dev/null; then
+        echo "command bw could not be found install the Bitwarden CLI before running gpg-keyconfig"
+        exit 1
+    fi
+
     bw_status=$(bw status | jq -r '.status')
     if [[ $bw_status == "unauthenticated" ]]; then
         echo "Set the BW_SESSION env variable. run 'bw login' to retrieve it";
@@ -35,16 +40,29 @@ install_keys() {
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
     bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import 
     bw get attachment $ATTACHMENT_SECRET_SUBKEYS --itemid $itemid --raw | gpg --import 
-    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "fingerprint") | .value')
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value')
     echo "${fingerprint}:6:" | gpg --import-ownertrust
 }
 
 install_key_full() {
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
-    bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import
+    bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import 
     bw get attachment $ATTACHMENT_SECRET_KEYS --itemid $itemid --raw | gpg --import 
-    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "fingerprint") | .value')
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value') 
     echo "${fingerprint}:6:" | gpg --import-ownertrust
+}
+
+sync_key_to_cloud() {
+    scratch=$(mktemp -d -t tmp.XXXXXXXXXX)
+    trap "rm -rf $scratch" EXIT
+    itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value')
+
+    gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 1>$null
+    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_KEYS" --itemid "$itemid" 1>$null
+
+    gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS" 1>$null
+    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_SUBKEYS" --itemid "$itemid" 1>$null
 }
 
 usage() {
@@ -72,7 +90,7 @@ main() {
         install_key_full
     elif [[ $cmd == "sync" ]]; then
         check_bw_status
-        usage
+        sync_key_to_cloud
     else
         usage
     fi
