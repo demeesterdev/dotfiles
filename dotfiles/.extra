@@ -12,11 +12,21 @@ GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 git config --global user.email "$GIT_AUTHOR_EMAIL"
 GH_USER="demeesterdev"
 git config --global github.user "$GH_USER"
+GH_SIGNINGKEY="0x84D2A43D8488E876"
+git config --global user.signingkey "$GH_SIGNINGKEY"
 
 
 # wsl configuration
-if grep -q Microsoft /proc/version; then
+if grep -q [Mm]icrosoft /proc/version; then
   git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe"
   git config --global credential.https://dev.azure.com.useHttpPath true
 fi
 
+#configure and run gpg agent
+if grep -q [Mm]icrosoft /proc/version; then
+  sed -i 's/^pinentry-program.*$/pinentry-program "\/mnt\/c\/Program Files \(x86\)\/GnuPg\/bin\/pinentry-basic\.exe"/' ~/.gnupg/gpg-agent.conf
+fi
+
+if ! pgrep -x -u "${USER}" gpg-agent &> /dev/null; then
+        gpg-connect-agent /bye &> /dev/null
+fi

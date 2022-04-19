@@ -121,7 +121,6 @@ get_dotfiles() {
 
 reset_dotfiles_owner() {
     if [ "$EUID" -eq 0 ]; then
-        echo "running as root resetting ownership of dotfiles"
         find $TARGET_HOME ! -user $TARGET_USER -exec chown -h $TARGET_USER. {} \;
     fi
 }
@@ -155,6 +154,7 @@ main() {
     elif [[ $cmd == "bw" ]]; then
         get_user
         install_bw_cli
+        reset_dotfiles_owner
     elif [[ $cmd == "fresh" ]]; then
         check_is_sudo
         echo
@@ -170,6 +170,13 @@ main() {
         echo "Installing base packages..."
         echo
         base_min
+
+        #install dev tools
+        echo
+        echo "Installing tools"
+        echo 
+        echo "  - bitwardenCLI"
+        install_bw_cli
 
         #install dotfiles
         echo

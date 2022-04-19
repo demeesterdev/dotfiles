@@ -40,7 +40,7 @@ install_keys() {
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
     bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import 
     bw get attachment $ATTACHMENT_SECRET_SUBKEYS --itemid $itemid --raw | gpg --import 
-    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value')
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value")
     echo "${fingerprint}:6:" | gpg --import-ownertrust
 }
 
@@ -48,7 +48,7 @@ install_key_full() {
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
     bw get attachment $ATTACHMENT_PUBLIC_KEYS --itemid $itemid --raw | gpg --import 
     bw get attachment $ATTACHMENT_SECRET_KEYS --itemid $itemid --raw | gpg --import 
-    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value') 
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value") 
     echo "${fingerprint}:6:" | gpg --import-ownertrust
 }
 
@@ -56,7 +56,7 @@ sync_key_to_cloud() {
     scratch=$(mktemp -d -t tmp.XXXXXXXXXX)
     trap "rm -rf $scratch" EXIT
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
-    fingerprint=$(bw get item $KEYITEMNAME | jq -r '.fields[] | select(.name == "$FIELD_FINGERPRINT_NAME") | .value')
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value")
 
     gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 1>$null
     bw create attachment --file "$scratch/$ATTACHMENT_SECRET_KEYS" --itemid "$itemid" 1>$null
