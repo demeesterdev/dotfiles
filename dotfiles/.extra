@@ -24,7 +24,7 @@ fi
 
 #configure and run gpg agent
 if grep -q [Mm]icrosoft /proc/version; then
-  sed -i 's/^pinentry-program.*$/pinentry-program "\/mnt\/c\/Program Files \(x86\)\/GnuPg\/bin\/pinentry-basic\.exe"/' ~/.gnupg/gpg-agent.conf
+  sed -i --follow-symlinks 's/^pinentry-program.*$/pinentry-program "\/mnt\/c\/Program Files \(x86\)\/GnuPg\/bin\/pinentry-basic\.exe"/' ~/.gnupg/gpg-agent.conf
 fi
 
 if ! pgrep -x -u "${USER}" gpg-agent &> /dev/null; then
