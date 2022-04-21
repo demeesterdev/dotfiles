@@ -161,6 +161,8 @@
 #[remote "origin"]
 	#fetch = +refs/pull/*/head:refs/remotes/origin/pull/*
 
+[init]
+	defaultBranch = main
 [commit]
 	gpgsign = true
 [pull]
