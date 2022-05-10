@@ -73,6 +73,7 @@ base_min() {
         unzip \
         xz-utils \
         zip \
+        vim \
         --no-install-recommends
 
     apt autoremove -y
