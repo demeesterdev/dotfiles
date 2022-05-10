@@ -167,3 +167,5 @@
 	gpgsign = true
 [pull]
 	rebase = true
+
+# dynamic entries below this line
