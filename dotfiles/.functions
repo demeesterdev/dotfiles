@@ -52,14 +52,3 @@ repo() {
 
 	explorer.exe "$url" &> /dev/null || (echo "Using $(type open) to open URL failed." && exit 1);
 }
-
-# check if uri is up
-isup() {
-	local uri=$1
-
-	if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
-		notify-send --urgency=critical "$uri is down"
-	else
-		notify-send --urgency=low "$uri is up"
-	fi
-}
