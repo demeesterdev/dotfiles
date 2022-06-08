@@ -58,11 +58,11 @@ sync_key_to_cloud() {
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
     fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value")
 
-    gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 1>$null
-    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_KEYS" --itemid "$itemid" 1>$null
+    gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 1> /dev/null
+    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_KEYS" --itemid "$itemid" 1> /dev/null
 
-    gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS" 1>$null
-    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_SUBKEYS" --itemid "$itemid" 1>$null
+    gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS" 1> /dev/null
+    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_SUBKEYS" --itemid "$itemid" 1> /dev/null
 }
 
 usage() {
