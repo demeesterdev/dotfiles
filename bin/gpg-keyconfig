@@ -53,16 +53,59 @@ install_key_full() {
 }
 
 sync_key_to_cloud() {
+    echo "sync pgp keys to bitwarden vault"
+
     scratch=$(mktemp -d -t tmp.XXXXXXXXXX)
     trap "rm -rf $scratch" EXIT
     itemid=$(bw get item $KEYITEMNAME | jq -r '.id')
     fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value")
+    echo " key $fingerprint: "
+    echo " - public key"
+    gpg --armor --export $fingerprint > "$scratch/$ATTACHMENT_PUBLIC_KEYS" 1> /dev/null
+    update_bw_attachment "$scratch/$ATTACHMENT_PUBLIC_KEYS" "$itemid" 1> /dev/null
 
+    echo " - secret primary key"
     gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 1> /dev/null
-    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_KEYS" --itemid "$itemid" 1> /dev/null
+    update_bw_attachment "$scratch/$ATTACHMENT_SECRET_KEYS" "$itemid" 1> /dev/null
 
+    echo " - secret subkeys"
     gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS" 1> /dev/null
-    bw create attachment --file "$scratch/$ATTACHMENT_SECRET_SUBKEYS" --itemid "$itemid" 1> /dev/null
+    update_bw_attachment "$scratch/$ATTACHMENT_SECRET_KEYS" "$itemid" 1> /dev/null
+
+    echo "done"
+    echo ""
+}
+
+#
+# given a file uploads file as attachment
+# if attachement with filename already exists renames old version to filename.YYYYMMDDHHMM.old
+#
+update_bw_attachment() {
+    item_path=$1
+    itemid=$2
+    date=$(date '+%Y%m%d%H%M')
+    if [ ! -f "$item_path" ]; then
+        echo "file does not exist at path '$item_path'"
+        exit
+    fi
+
+    itemname=$(basename $item_path)
+
+    item=$(bw get item $itemid)    
+    attachment_ids=($(echo $item | jq -r ".attachments[] | select(.fileName == \"$itemname\") | .id"))
+
+    scratch=$(mktemp -d -t tmp.XXXXXXXXXX)
+    trap "rm -rf $scratch" EXIT
+
+    for attachment_id in $attachment_ids    
+    do
+        filename="${itemname}.${date}.old"
+        filepath="${scratch}/${filename}"
+        bw get attachment $attachment_id --itemid $itemid --raw > $filepath
+        bw create attachment --file $filepath --itemid $itemid 1>/dev/null && bw delete attachment $attachment_id --itemid $itemid 1>/dev/null
+    done
+
+    bw create attachment --file $item_path --itemid $itemid 1>/dev/null
 }
 
 usage() {
