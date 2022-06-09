@@ -61,17 +61,13 @@ sync_key_to_cloud() {
     fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value")
     echo " key $fingerprint: "
     echo " - public key"
-    gpg --armor --export $fingerprint > "$scratch/$ATTACHMENT_PUBLIC_KEYS" 
-    update_bw_attachment "$scratch/$ATTACHMENT_PUBLIC_KEYS" "$itemid" 
+    gpg --armor --export $fingerprint > "$scratch/$ATTACHMENT_PUBLIC_KEYS" && update_bw_attachment "$scratch/$ATTACHMENT_PUBLIC_KEYS" "$itemid" 
 
     echo " - secret primary key"
-    gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" 
-    update_bw_attachment "$scratch/$ATTACHMENT_SECRET_KEYS" "$itemid" 
+    gpg -a --export-secret-key $fingerprint > "$scratch/$ATTACHMENT_SECRET_KEYS" && update_bw_attachment "$scratch/$ATTACHMENT_SECRET_KEYS" "$itemid" 
 
     echo " - secret subkeys"
-    gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS"
-
-    update_bw_attachment "$scratch/$ATTACHMENT_SECRET_SUBKEYS" "$itemid" 
+    gpg -a --export-secret-subkeys $fingerprint > "$scratch/$ATTACHMENT_SECRET_SUBKEYS" && update_bw_attachment "$scratch/$ATTACHMENT_SECRET_SUBKEYS" "$itemid" 
 
     echo "done"
     echo ""
