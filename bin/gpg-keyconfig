@@ -115,16 +115,21 @@ update_bw_attachment() {
             newcontent='false'
         else
             echo "       [DEBUG] demoting attachment $attachment_id to $filename"
-        bw create attachment --file $filepath --itemid $itemid 1>/dev/null && bw delete attachment $attachment_id --itemid $itemid 1>/dev/null
+            bw create attachment --file $filepath --itemid $itemid 1>/dev/null && bw delete attachment $attachment_id --itemid $itemid 1>/dev/null
         fi
     done
 
     if [ $newcontent == 'true' ]; then
         echo "       [DEBUG] uploading new content"
-    bw create attachment --file $item_path --itemid $itemid 1>/dev/null
+        bw create attachment --file $item_path --itemid $itemid 1>/dev/null
     else
         echo "       [DEBUG] no new contentent skipping upload"
     fi
+}
+
+remove_secret_keys() {
+    fingerprint=$(bw get item $KEYITEMNAME | jq -r ".fields[] | select(.name == \"$FIELD_FINGERPRINT_NAME\") | .value") 
+    gpg --delete-secret-keys $fingerprint
 }
 
 usage() {
@@ -132,6 +137,7 @@ usage() {
     echo "Usage:"
     echo "  install-keys                        - install public keys and private subkeys from bitwarden"
     echo "  install-key-full                    - install the full key private and public from bitwarden"
+    echo "  uninstall-primary-key-secret        - uninstalls the primary key"
     echo "  sync                                - uploads all available keys to bitwarden"
 }
 
@@ -153,6 +159,11 @@ main() {
     elif [[ $cmd == "sync" ]]; then
         check_bw_status
         sync_key_to_cloud
+    elif [[ $cmd == "uninstall-primary-key-secret" ]]; then
+        check_bw_status
+        sync_key_to_cloud
+        remove_secret_keys
+        install_keys
     else
         usage
     fi
