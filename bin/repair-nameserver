@@ -1,0 +1,23 @@
+#!/bin/bash
+##############################################################################
+# repair-nameserver
+# -----------
+# configures the namservers for the current distribution to a usable state
+# created for use in wsl to auto update the distributions resolv.conf
+# using auto resolving doesn't always work with vpns   
+#
+# Usage:
+#       repair-nameserver
+#
+# :authors: Thijs De Meester, @demeesterdev
+# :date: 2022-06-15
+# :version: 0.0.1
+##############################################################################
+
+if grep -q [Mm]icrosoft /proc/sys/kernel/osrelease ; then
+    echo "in wsl. trying 'pwsh.exe -c update-wslnameserver'"
+    pwsh.exe -c update-wslnameserver
+    echo "TODO: implement native ns resolving"
+else
+    echo "not in wsl. TODO: setup default nameservers"
+fi

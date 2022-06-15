@@ -19,3 +19,5 @@ alias sudo='sudo '
 alias pubip="curl -s https://api.ipify.org"
 
 alias resource="source ~/.bashrc"
+
+alias iswsl="grep -q [Mm]icrosoft /proc/sys/kernel/osrelease"
