@@ -98,6 +98,30 @@ install_bw_cli() {
 
 }
 
+install_node() {
+	curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+
+	# FROM: https://github.com/nodesource/distributions/blob/master/README.md
+	# Replace with the branch of Node.js or io.js you want to install: node_6.x,
+	# node_8.x, etc...
+	VERSION=node_14.x
+	# The below command will set this correctly, but if lsb_release isn't available, you can set it manually:
+	# - For Debian distributions: jessie, sid, etc...
+	# - For Ubuntu distributions: xenial, bionic, etc...
+	# - For Debian or Ubuntu derived distributions your best option is to use
+	# the codename corresponding to the upstream release your distribution is
+	# based off. This is an advanced scenario and unsupported if your
+	# distribution is not listed as supported per earlier in this README.
+	DISTRO="$(lsb_release -s -c)"
+	echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+	echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+
+	sudo apt update || true
+	sudo apt install -y \
+		nodejs \
+		--no-install-recommends
+}
+
 get_dotfiles() {
     # create subshell
     
@@ -105,16 +129,23 @@ get_dotfiles() {
         export HOME=$TARGET_HOME
         cd "$HOME"
 
+        RESET=0
         if [[ ! -d "${HOME}/dotfiles" ]]; then
         # install dotfiles from repo
             git clone https://github.com/demeesterdev/dotfiles.git "${HOME}/dotfiles"
+        else
+            RESET=1
         fi
 
         cd "${HOME}/dotfiles"
 
-        # set the correct origin
-        git remote set-url origin git@github.com:demeesterdev/dotfiles.git
-
+        if [[ RESET == 1 ]]; then
+            git fetch
+            git reset .
+            git clean -df
+            git checkout -- .
+            git checkout origin/main
+        fi
         # installs all the things
         make
     )
@@ -135,6 +166,7 @@ usage() {
     echo "  dotfiles                            - install dotfiles on system"
     echo "  fresh                               - install and configure dotfiles on a new machine"
     echo "  bw                                  - install bitwarden cli"
+    echo "  node                                - install node"
 }
 
 main() {
