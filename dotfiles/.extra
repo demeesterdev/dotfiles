@@ -51,3 +51,5 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
    fi
    eval `cat $HOME/.ssh/ssh-agent` > /dev/null
 fi
+
+ssh-add > /dev/null
