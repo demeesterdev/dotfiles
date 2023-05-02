@@ -24,3 +24,6 @@ export LC_ALL="en_US.UTF-8";
 
 #help gpg tty
 export GPG_TTY=$(tty)
+
+#add golang bin dir to path
+export PATH=$PATH:/usr/local/go/bin
