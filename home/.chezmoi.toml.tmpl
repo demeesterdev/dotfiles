@@ -1,0 +1,55 @@
+{{/* boolean feature flags */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $storeSecrets := false -}}{{/* true if this machine should have personal secrets */}}
+{{- "" -}}
+
+{{/* string config parameters */}}
+
+{{- $defaultGitUserName := "demeesterdev" -}}
+{{- $gitUserName := "" -}}
+{{- $defaultGitUserEmail := "thijs@demeester.dev" -}}
+{{- $gitUserEmail := "" -}}
+{{- $defaultGPGSigningKey := "F89E223BE4C8A21F2578188A3024452DEBC9B9C5" -}}
+{{- $gpgSigningKey := "" -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* detect gihtub codespaces, VSCode remote containers, Docker containers, Multipass Vms, Vagrant, etc */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+{{- if not $ephemeral -}}
+{{-  $gitUserName = promptStringOnce . "name" "What is the value for user.name for git config" $defaultGitUserName -}}
+{{-  $gitUserEmail = promptStringOnce . "email" "What is the value for user.email for git config" $defaultGitUserEmail -}}
+{{-  $gpgSigningKey = promptStringOnce . "signing_key" "What is your signing key for git config" $defaultGPGSigningKey -}}
+{{-  $storeSecrets = promptBoolOnce . "store_secrets" "Store secrets on this machine (y/n/true/false)" false -}}
+{{- end -}}
+
+{{- if $storeSecrets -}}
+{{-   if eq .chezmoi.os "windows" -}}
+{{-     writeToStdout "bw cli installer for windows not yet implemented\n" -}}
+{{/*[hooks.read-source-state.pre] *}}
+{{/*    command = ".local/share/chezmoi/scripts/.install-bwcli.ps1" */}}
+{{-   else -}}
+{{-     writeToStdout "bw cli installer for linux not yet implemented\n" -}}
+{{/*[hooks.read-source-state.pre] *}}
+{{/*    command = ".local/share/chezmoi/scripts/.install-bwcli.sh" */}}
+{{-   end -}}
+{{- end -}}
+
+[data]
+  osid = {{ $osID | quote }}
+  store_secrets = {{ $storeSecrets }}
+  ephemeral = {{ $ephemeral }}
+  headless = {{ $headless }}
+  signing_key = {{ $gpgSigningKey | quote }}
+  name = {{ $gitUserName | quote }}
+  email = {{ $gitUserEmail | quote }}
+
+
