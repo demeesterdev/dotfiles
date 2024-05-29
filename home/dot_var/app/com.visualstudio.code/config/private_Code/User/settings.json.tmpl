@@ -1,0 +1,23 @@
+{
+    "security.workspace.trust.untrustedFiles": "newWindow",
+    {{- if (eq .osid "linux-fedora") }}
+    "terminal.integrated.automationProfile.linux": {
+        "path": "/usr/bin/flatpak-spawn",
+            "args": [
+                "--host",
+                "--env=TERM=xterm-256color",
+                "bash"
+            ]
+    }
+    "terminal.integrated.defaultProfile.linux": "bash-flatpack",
+    {{ end -}}
+    "terminal.integrated.profiles.linux": {
+        "bash-flatpack": {
+            "path": "/usr/bin/flatpak-spawn",
+            "args": [
+                "--env=TERM=xterm-256color",
+                "--host", "script", "--quiet", "/dev/null"
+            ]
+        }
+    },
+}
