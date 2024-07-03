@@ -1,0 +1,3 @@
+if [ -s "$HOME/.config/zsh" ]; then
+   . "$HOME/.config/zsh"
+fi

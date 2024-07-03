@@ -1,0 +1,5 @@
+{{- if ne .osid "darwin" }}
+# ignore .zsh files unless running on mac
+.zprofile
+.zshrc
+{{- end }}
