@@ -2,4 +2,8 @@
 # ignore .zsh files unless running on mac
 .zprofile
 .zshrc
+.config/zsh/
+{{- end }}
+{{- if ne .osid "linux-fedora"}}
+.bashrc.d/toolbox.sh
 {{- end }}
