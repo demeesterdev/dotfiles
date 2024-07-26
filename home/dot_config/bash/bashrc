@@ -1,4 +1,4 @@
-if [ -d "${HOME}/.config/zsh/zshrc.d" ]; then
+if [ -d "${HOME}/.config/bash/bashrc.d" ]; then
     for rc in ${HOME}/.config/bash/bashrc.d/* ; do
         if [ -f "$rc" ]; then
             . "$rc"

@@ -1,0 +1,10 @@
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
+pathadd "$HOME/bin"
+pathadd "$HOME/.local/bin"
+pathadd "/opt/local/bin"
+pathadd "/opt/local/sbin"

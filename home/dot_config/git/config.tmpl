@@ -5,7 +5,9 @@
 
 [commit]
     gpgsign=true
+{{- if (eq .osid "darwin") }}
 [credential]
-	helper = /usr/local/bin/git-credential-manager
+	helper = /usr/local/share/gcm-core/git-credential-manager
+{{ end -}}
 [credential "https://dev.azure.com"]
 	useHttpPath = true
