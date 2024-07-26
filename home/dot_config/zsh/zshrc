@@ -1,4 +1,4 @@
-if [ -d "${HOME}/.config/zsh/zshrc.d" ]; then
+if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
     for rc in ${HOME}/.config/zsh/zshrc.d/* ; do
         if [ -f "$rc" ]; then
             . "$rc"
@@ -7,7 +7,7 @@ if [ -d "${HOME}/.config/zsh/zshrc.d" ]; then
 fi
 unset rc
 
-if [ -d "${HOME}/.config/shell/" ]; then
+if [ -n "$(echo ${HOME}/.config/shell/*(N))" ]; then
     for rc in ${HOME}/.config/shell/* ; do
         if [ -f "$rc" ]; then
             . "$rc"
