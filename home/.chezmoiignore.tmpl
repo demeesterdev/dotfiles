@@ -4,6 +4,9 @@
 .zshrc
 .config/zsh/
 Library
+
+# ignore darwin scripts unless running on darwin
+.chezmoiscripts/darwin*
 {{- end }}
 {{- if ne .osid "linux-fedora"}}
 .bashrc.d/toolbox.sh

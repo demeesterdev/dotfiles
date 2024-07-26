@@ -1,0 +1,27 @@
+packages:
+  darwin:
+    brews:
+      # base
+      - "gnupg"
+      - "jq"
+      - "openssh"
+      - "direnv"
+      # kubernetes
+      - "kubernetes-cli"
+      - "k9s"
+      - "kubectx"
+      - "helm"
+      # other
+      - "azure-cli"
+      - "pulumi"
+      - "mas"
+    casks:
+      - "iterm2"
+      - "git-credential-manager"
+      - "obsidian"
+      - "firefox"
+      - "spotify"
+      - "slack"
+    mas:
+      - "1352778147" #bitwarden
+      - "937984704" #amphetamine
