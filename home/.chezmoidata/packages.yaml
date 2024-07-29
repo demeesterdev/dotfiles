@@ -8,6 +8,7 @@ packages:
       - "direnv"
       - "age"
       - "sops"
+      - "pre-commit"
       # kubernetes
       - "kubernetes-cli"
       - "k9s"
