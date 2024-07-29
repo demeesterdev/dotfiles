@@ -6,6 +6,8 @@ packages:
       - "jq"
       - "openssh"
       - "direnv"
+      - "age"
+      - "sops"
       # kubernetes
       - "kubernetes-cli"
       - "k9s"
