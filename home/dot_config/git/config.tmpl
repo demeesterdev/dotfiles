@@ -5,7 +5,7 @@
 
 [commit]
     gpgsign=true
-{{- if (eq .osid "darwin") }}
+{{ if (eq .osid "darwin") -}}
 [credential]
 	helper = /usr/local/share/gcm-core/git-credential-manager
 {{ end -}}

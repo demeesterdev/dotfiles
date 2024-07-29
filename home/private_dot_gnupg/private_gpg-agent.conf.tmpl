@@ -1,3 +1,7 @@
+enable-ssh-support
+{{ if (eq .osid "linux-fedora" ) -}}
+pinentry-program /usr/bin/pinentry
+{{end -}}
 {{ if (eq .osid "darwin") -}}
 pinentry-program /usr/local/bin/pinentry-mac
 {{ end -}}
