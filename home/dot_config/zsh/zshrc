@@ -1,3 +1,5 @@
+#! /bin/zsh
+
 if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
     for rc in ${HOME}/.config/zsh/zshrc.d/* ; do
         if [ -f "$rc" ]; then

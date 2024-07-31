@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0 # Use the ref you want to point at
+    hooks:
+      - id: trailing-whitespace
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: end-of-file-fixer
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-shebang-scripts-are-executable
+      - id: check-toml
+      - id: detect-private-key
+      - id: mixed-line-ending
+      - id: pretty-format-json
+        args: [--autofix]
+      - id: trailing-whitespace
