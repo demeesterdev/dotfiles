@@ -1,5 +1,5 @@
 # custom pre commit hooks
-./.pre-commit-config.yaml
+.pre-commit-config.yaml
 
 # credential entries
 kubeconfig

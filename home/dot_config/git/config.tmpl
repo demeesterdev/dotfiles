@@ -13,4 +13,7 @@
 	useHttpPath = true
 
 [core]
-    excludeFile = ~/.config/git/global.gitignore
+    excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/global.gitignore" }}
+
+[init]
+    templateDir = {{ joinPath .chezmoi.homeDir ".config/git/template" }}
