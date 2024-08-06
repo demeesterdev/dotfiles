@@ -1,0 +1,36 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.rulers": [
+    {
+      "column": 70,
+      "color": "#2c2c2c"
+    },
+    {
+      "column": 80,
+      "color": "#4d4d4d"
+    },
+    {
+      "column": 90,
+      "color": "#2c2c2c"
+    }
+  ],
+  "terminal.integrated.allowedLinkSchemes": [
+    "file",
+    "http",
+    "https",
+    "mailto",
+    "vscode",
+    "vscode-insiders",
+    "docker-desktop"
+  ],
+  "git.autofetch": true,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "git.confirmSync": false,
+  "liveshare.guestApprovalRequired": true,
+  "liveshare.populateGitCoAuthors": "never",
+  "liveshare.launcherClient": "visualStudioCode",
+  {{- if eq .osid "darwin" }}
+  "liveshare.connectionMode": "relay"
+  {{- end }}
+}

@@ -5,15 +5,19 @@ repos:
       - id: trailing-whitespace
       - id: check-yaml
         args: [--allow-multiple-documents]
+        exclude: ^home/.chezmoitemplates/
       - id: end-of-file-fixer
       - id: check-executables-have-shebangs
       - id: check-json
-      - id: check-shebang-scripts-are-executable
-      - id: check-toml
-      - id: detect-private-key
-      - id: mixed-line-ending
+        exclude: ^home/.chezmoitemplates/
       - id: pretty-format-json
         args: [--autofix]
+        exclude: ^home/.chezmoitemplates/
+      - id: check-shebang-scripts-are-executable
+      - id: check-toml
+        exclude: ^home/.chezmoitemplates/
+      - id: detect-private-key
+      - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.10.0
