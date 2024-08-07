@@ -21,4 +21,5 @@ path_remove ()  {
 path_prepend "/opt/local/sbin"
 path_prepend "/opt/local/bin"
 path_prepend "$HOME/.local/bin"
+path_prepend "$HOME/go/bin"
 path_prepend "$HOME/bin"
