@@ -1,0 +1,8 @@
+{{ if eq .osid "linux-debian" -}}
+#!/bin/bash
+
+{{ range .packages.debian.apt -}}
+sudo apt-get install {{ . | quote }} -y
+{{ end -}}
+
+{{ end -}}

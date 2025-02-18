@@ -17,3 +17,19 @@
 
 [init]
     templateDir = {{ joinPath .chezmoi.homeDir ".config/git/template" }}
+
+{{ if eq .chezmoi.os "windows" -}}
+
+[gpg]
+program = C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe
+{{ end }}
+{{ if eq .chezmoi.os "linux" -}}
+[gpg]
+{{    if stat ("/usr/local/bin/gpg") -}}
+        program = /usr/local/bin/gpg
+{{    else if stat ("$HOME/.local/bin/gpg" | expandenv) -}}
+        program = {{ "$HOME/.local/bin/gpg" | expandenv }}
+{{    else -}}
+        program = gpg
+{{    end -}}
+{{ end }}

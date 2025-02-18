@@ -28,3 +28,18 @@ packages:
     mas:
       - "1352778147" #bitwarden
       - "937984704" #amphetamine
+  debian:
+    apt:
+      # base
+      - "wget"
+      - "git"
+      - "gnupg"
+      - "jq"
+      - "direnv"
+      - "age"
+      - "pre-commit"
+      - "git"
+    bin:
+      - name: sops
+        url: https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
+      

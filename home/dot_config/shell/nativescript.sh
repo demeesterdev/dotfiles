@@ -5,4 +5,6 @@ if [ -d "$ANDROID_HOME" ]; then
     export PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
 
-export JAVA_HOME=$(/usr/libexec/java_home -v"17");
+if [ -e "/usr/libexec/java_home" ]; then
+    export JAVA_HOME=$(/usr/libexec/java_home -v"17");
+fi 

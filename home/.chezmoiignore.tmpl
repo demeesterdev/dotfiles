@@ -11,3 +11,14 @@ Library
 {{- if ne .osid "linux-fedora"}}
 .bashrc.d/toolbox.sh
 {{- end }}
+
+{{- if ne .osid "linux-debian"}}
+.chezmoiscripts/debian*
+{{- end }}
+
+{{- if ne .inwsl }}
+.local/bin/gpg
+.local/bin/ssh
+.local/bin/ssh-add
+.local/bin/scp
+{{- end }}

@@ -1,5 +1,6 @@
 {{/* boolean feature flags */}}
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $wsl := false }}{{/* true if this machine is running in WSL*/}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $storeSecrets := false -}}{{/* true if this machine should have personal secrets */}}
 {{- "" -}}
@@ -16,6 +17,12 @@
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
 {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{- $wsl = true -}}
+{{-   end -}}
 {{- end -}}
 
 {{/* detect gihtub codespaces, VSCode remote containers, Docker containers, Multipass Vms, Vagrant, etc */}}
@@ -45,6 +52,7 @@
 
 [data]
   osid = {{ $osID | quote }}
+  inwsl = {{ $wsl }}
   store_secrets = {{ $storeSecrets }}
   ephemeral = {{ $ephemeral }}
   headless = {{ $headless }}
