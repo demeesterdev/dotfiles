@@ -42,4 +42,3 @@ packages:
     bin:
       - name: sops
         url: https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
-      
