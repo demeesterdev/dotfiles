@@ -5,7 +5,11 @@
 
 [commit]
     gpgsign=true
-{{ if (eq .osid "darwin") -}}
+
+{{ if .inwsl }}
+[credential]
+    helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{ else if (eq .osid "darwin") -}}
 [credential]
 	helper = /usr/local/share/gcm-core/git-credential-manager
 {{ end -}}
@@ -21,7 +25,7 @@
 {{ if eq .chezmoi.os "windows" -}}
 
 [gpg]
-program = C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe
+        program = C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe
 {{ end }}
 {{ if eq .chezmoi.os "linux" -}}
 [gpg]

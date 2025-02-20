@@ -16,7 +16,7 @@ Library
 .chezmoiscripts/debian*
 {{- end }}
 
-{{- if ne .inwsl }}
+{{- if not .inwsl }}
 .local/bin/gpg
 .local/bin/ssh
 .local/bin/ssh-add
