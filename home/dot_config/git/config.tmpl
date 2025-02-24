@@ -29,7 +29,9 @@
 {{ end }}
 {{ if eq .chezmoi.os "linux" -}}
 [gpg]
-{{    if stat ("/usr/local/bin/gpg") -}}
+{{    if .inwsl -}}
+        program = "/mnt/c/Program Files (x86)/GnuPG/bin/gpg.exe"
+{{    else if stat ("/usr/local/bin/gpg") -}}
         program = /usr/local/bin/gpg
 {{    else if stat ("$HOME/.local/bin/gpg" | expandenv) -}}
         program = {{ "$HOME/.local/bin/gpg" | expandenv }}
