@@ -24,3 +24,5 @@ path_prepend "$HOME/.local/bin"
 path_prepend "$HOME/go/bin"
 path_prepend "$HOME/bin"
 path_prepend "${KREW_ROOT:-$HOME/.krew}/bin"
+
+path_append "/usr/local/opt/postgresql@15/bin/"
