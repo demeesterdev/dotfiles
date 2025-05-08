@@ -3,7 +3,6 @@
 {{- $wsl := false }}{{/* true if this machine is running in WSL*/}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $storeSecrets := false -}}{{/* true if this machine should have personal secrets */}}
-{{- "" -}}
 
 {{/* string config parameters */}}
 
@@ -13,6 +12,8 @@
 {{- $gitUserEmail := "" -}}
 {{- $defaultGPGSigningKey := "F89E223BE4C8A21F2578188A3024452DEBC9B9C5" -}}
 {{- $gpgSigningKey := "" -}}
+{{- $clienttypes := list "development" "personal" "headless" -}}
+{{- $clienttype := "headless" -}}
 
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -25,7 +26,7 @@
 {{-   end -}}
 {{- end -}}
 
-{{/* detect gihtub codespaces, VSCode remote containers, Docker containers, Multipass Vms, Vagrant, etc */}}
+{{/* detect github codespaces, VSCode remote containers, Docker containers, Multipass Vms, Vagrant, etc */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
 {{-   $ephemeral = true -}}
 {{-   $headless = true -}}
@@ -36,6 +37,7 @@
 {{-  $gitUserEmail = promptStringOnce . "email" "What is the value for user.email for git config" $defaultGitUserEmail -}}
 {{-  $gpgSigningKey = promptStringOnce . "signing_key" "What is your signing key for git config" $defaultGPGSigningKey -}}
 {{-  $storeSecrets = promptBoolOnce . "store_secrets" "Store secrets on this machine (y/n/true/false)" false -}}
+{{-  $clienttype = promptChoiceOnce . "clienttype" "What type of host are you on" $clienttypes -}}
 {{- end -}}
 
 {{- if $storeSecrets -}}
@@ -56,6 +58,7 @@
   store_secrets = {{ $storeSecrets }}
   ephemeral = {{ $ephemeral }}
   headless = {{ $headless }}
+  clienttype = {{ $clienttype | quote }}
   signing_key = {{ $gpgSigningKey | quote }}
   name = {{ $gitUserName | quote }}
   email = {{ $gitUserEmail | quote }}

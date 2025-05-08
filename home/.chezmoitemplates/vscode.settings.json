@@ -31,6 +31,13 @@
   "liveshare.populateGitCoAuthors": "never",
   "liveshare.launcherClient": "visualStudioCode",
   {{- if eq .osid "darwin" }}
-  "liveshare.connectionMode": "relay"
+  "liveshare.connectionMode": "relay",
   {{- end }}
+  "go.formatTool": "gofumpt",
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 }

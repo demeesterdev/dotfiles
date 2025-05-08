@@ -18,6 +18,7 @@ packages:
       - "azure-cli"
       - "pulumi"
       - "mas"
+      - "go"
     casks:
       - "iterm2"
       - "git-credential-manager"
@@ -42,3 +43,5 @@ packages:
     bin:
       - name: sops
         url: https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
+  golang:
+    - "github.com/netr0m/az-pim-cli@latest"

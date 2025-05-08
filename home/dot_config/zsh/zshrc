@@ -1,8 +1,8 @@
 #! /bin/zsh
 # shellcheck disable=SC1071 # shellcheck doesn't like zsh files
 
-if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
-    for rc in ${HOME}/.config/zsh/zshrc.d/* ; do
+if [ -n "$(echo ${HOME}/.config/shell/*(N))" ]; then
+    for rc in ${HOME}/.config/shell/* ; do
         if [ -f "$rc" ]; then
             . "$rc"
         fi
@@ -10,8 +10,8 @@ if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
 fi
 unset rc
 
-if [ -n "$(echo ${HOME}/.config/shell/*(N))" ]; then
-    for rc in ${HOME}/.config/shell/* ; do
+if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
+    for rc in ${HOME}/.config/zsh/zshrc.d/* ; do
         if [ -f "$rc" ]; then
             . "$rc"
         fi
