@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148 # ignoring as it is a direnv script
 if [ -f "${PWD}/kubeconfig" ]; then
   export KUBECONFIG="${PWD}/kubeconfig"
 fi
