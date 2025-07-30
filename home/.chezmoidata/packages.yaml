@@ -9,7 +9,6 @@ packages:
       - "age"
       - "sops"
       - "pre-commit"
-      - "zellij"
       # kubernetes
       - "kubernetes-cli"
       - "k9s"
@@ -20,6 +19,7 @@ packages:
       - "pulumi"
       - "mas"
       - "go"
+      - "ghq"
     casks:
       - "iterm2"
       - "git-credential-manager"

@@ -40,4 +40,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
+  "telemetry.telemetryLevel": "off"
 }
