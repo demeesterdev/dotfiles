@@ -22,6 +22,8 @@
 [init]
     templateDir = {{ joinPath .chezmoi.homeDir ".config/git/template" }}
 
+[ghq]
+  root = {{ joinPath .chezmoi.homeDir "development" }}
 {{ if eq .chezmoi.os "windows" -}}
 
 [gpg]
