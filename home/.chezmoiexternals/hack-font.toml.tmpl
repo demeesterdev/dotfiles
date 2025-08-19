@@ -1,0 +1,6 @@
+{{- if eq .osid "darwin" }}
+["Library/Fonts/"]
+    type = "archive"
+    url = {{ gitHubLatestReleaseAssetURL "source-foundry/Hack" "Hack-v3.003-ttf.tar.gz" | quote }}
+    stripComponents = 1
+{{- end }}

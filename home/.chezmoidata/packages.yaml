@@ -9,6 +9,7 @@ packages:
       - "age"
       - "sops"
       - "pre-commit"
+      - "zellij"
       # kubernetes
       - "kubernetes-cli"
       - "k9s"
@@ -27,6 +28,7 @@ packages:
       - "firefox"
       - "spotify"
       - "slack"
+      - "headlamp"
     mas:
       - "1352778147" #bitwarden
       - "937984704" #amphetamine
@@ -41,8 +43,5 @@ packages:
       - "age"
       - "pre-commit"
       - "git"
-    bin:
-      - name: sops
-        url: https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
   golang:
     - "github.com/netr0m/az-pim-cli@latest"
