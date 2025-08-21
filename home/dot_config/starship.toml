@@ -1,0 +1,31 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Increase the default command timeout to 2 seconds
+command_timeout = 2000
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+format = """\
+$directory$fill$direnv$all($git_branch$git_status
+)$character"""
+
+[fill]
+symbol=' '
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green) '
+error_symbol = '[➜](bold red) '
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[pulumi]
+format='[$symbol$stack]($style) '
+
+[nodejs]
+disabled=true
+
+[direnv]
+disabled=false

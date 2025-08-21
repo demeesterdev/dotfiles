@@ -9,7 +9,10 @@ packages:
       - "age"
       - "sops"
       - "pre-commit"
+      # shell productivity
       - "zellij"
+      - "atuin"
+      - "helix"
       # kubernetes
       - "kubernetes-cli"
       - "k9s"

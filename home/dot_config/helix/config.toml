@@ -1,0 +1,18 @@
+theme = "tokyonight"
+
+[editor]
+bufferline = "always"
+line-number = "relative"
+
+[editor.file-picker]
+hidden = false
+
+[editor.lsp]
+display-inlay-hints = true
+display-messages = true
+
+[keys.insert]
+C-space = "completion"
+
+[keys.normal]
+C-y = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open"

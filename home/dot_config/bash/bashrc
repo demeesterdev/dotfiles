@@ -15,3 +15,7 @@ if [ -d "${HOME}/.config/shell/" ]; then
     done
 fi
 unset rc
+
+if type zellij >/dev/null 2>&1 ; then
+    eval "$(zellij setup --generate-auto-start bash)"
+fi
