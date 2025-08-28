@@ -48,3 +48,4 @@ packages:
       - "git"
   golang:
     - "github.com/netr0m/az-pim-cli@latest"
+    - "github.com/x-motemen/ghq@latest"
