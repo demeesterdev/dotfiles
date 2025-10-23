@@ -3,6 +3,7 @@ packages:
     brews:
       # base
       - "gnupg"
+      - "pinentry-mac"
       - "jq"
       - "openssh"
       - "direnv"
@@ -24,14 +25,16 @@ packages:
       - "mas"
       - "go"
       - "ghq"
+      - "podman"
     casks:
       - "iterm2"
       - "git-credential-manager"
-      - "obsidian"
       - "firefox"
       - "spotify"
       - "slack"
       - "headlamp"
+      - "podman-desktop"
+      - "visual-studio-code"
     mas:
       - "1352778147" #bitwarden
       - "937984704" #amphetamine

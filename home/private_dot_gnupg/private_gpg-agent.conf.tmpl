@@ -3,7 +3,7 @@ enable-ssh-support
 pinentry-program /usr/bin/pinentry
 {{end -}}
 {{ if (eq .osid "darwin") -}}
-pinentry-program /usr/local/bin/pinentry-mac
+pinentry-program /opt/homebrew/bin/pinentry
 {{ end -}}
 enable-ssh-support
 write-env-file

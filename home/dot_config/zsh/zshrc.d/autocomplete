@@ -3,11 +3,3 @@ autoload -U +X bashcompinit && bashcompinit
 if [ -f /usr/local/etc/bash_completion.d/az ]; then
     source /usr/local/etc/bash_completion.d/az
 fi
-
-
-
-if command -v az-pim-cli 2>&1 > /dev/null ; then
-    if [ ! -f /usr/local/share/zsh/site-functions/_az-pim-cli ]; then
-        az-pim-cli completion zsh > /usr/local/share/zsh/site-functions/_az-pim-cli
-    fi
-fi

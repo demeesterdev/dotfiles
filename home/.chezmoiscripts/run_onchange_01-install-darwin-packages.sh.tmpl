@@ -1,6 +1,12 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
+if ! type brew >/dev/null 2>&1 ; then
+    echo "Installing homebrew" >1
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    export PATH="$PATH:/opt/homebrew/bin/"
+fi
+
 brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.darwin.brews -}}
 brew {{ . | quote }}
