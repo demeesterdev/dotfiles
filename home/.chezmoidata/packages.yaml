@@ -26,6 +26,7 @@ packages:
       - "go"
       - "ghq"
       - "podman"
+      - "podman-compose"
     casks:
       - "iterm2"
       - "git-credential-manager"
