@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+_dev() {
+	local cur="${COMP_WORDS[COMP_CWORD]:-}"
+	COMPREPLY=()
+
+	if (( COMP_CWORD > 1 )); then
+		return 0
+	fi
+
+	if ! command -v ghq >/dev/null 2>&1; then
+		return 0
+	fi
+
+	local repos=()
+	while IFS= read -r repo; do
+		[[ -n "$repo" ]] && repos+=("$repo")
+	done < <(ghq list 2>/dev/null)
+
+	(( ${#repos[@]} == 0 )) && return 0
+
+	local has_slash=0
+	local prefix=""
+	local needle="$cur"
+	if [[ "$cur" == */* ]]; then
+		has_slash=1
+		prefix="${cur%/*}"
+		needle="${cur##*/}"
+	fi
+
+	local base_matches=()
+	local base_sources=()
+	local path_matches=()
+
+	local repo base suggestion existing idx value
+	for repo in "${repos[@]}"; do
+		if (( has_slash )) && [[ "$repo" != "$prefix"* ]]; then
+			[[ "$repo" == "$cur"* ]] && path_matches+=("$repo")
+			continue
+		fi
+
+		base="${repo##*/}"
+		if [[ "$base" == "$needle"* ]]; then
+			if (( has_slash )); then
+				if [[ -n "$prefix" ]]; then
+					suggestion="${prefix%/}/$base"
+				else
+					suggestion="$base"
+				fi
+			else
+				suggestion="$base"
+			fi
+
+			existing=-1
+			for idx in "${!base_matches[@]}"; do
+				if [[ "${base_matches[$idx]}" == "$suggestion" && -n "${base_sources[$idx]}" ]]; then
+					existing=$idx
+					break
+				fi
+			done
+
+			if (( existing >= 0 )); then
+				base_matches[$existing]="${base_sources[$existing]}"
+				base_sources[$existing]=""
+				base_matches+=("$repo")
+				base_sources+=("")
+			else
+				base_matches+=("$suggestion")
+				base_sources+=("$repo")
+			fi
+			continue
+		fi
+
+		[[ "$repo" == "$cur"* ]] && path_matches+=("$repo")
+	done
+
+	if (( ${#base_matches[@]} > 0 )); then
+		local combined=()
+		for value in "${base_matches[@]}"; do
+			[[ -n "$value" ]] && combined+=("$value")
+		done
+		if (( ${#path_matches[@]} > 0 )); then
+			for suggestion in "${path_matches[@]}"; do
+				local duplicate=0
+				for value in "${combined[@]}"; do
+					if [[ "$value" == "$suggestion" ]]; then
+						duplicate=1
+						break
+					fi
+				done
+				(( duplicate == 0 )) && combined+=("$suggestion")
+			done
+		fi
+		COMPREPLY=("${combined[@]}")
+	else
+		COMPREPLY=("${path_matches[@]}")
+	fi
+
+	if (( ${#COMPREPLY[@]} == 0 )); then
+		while IFS= read -r value; do
+			COMPREPLY+=("$value")
+		done < <(compgen -f -- "$cur")
+	fi
+}
+
+complete -F _dev dev

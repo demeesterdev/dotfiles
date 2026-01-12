@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+    
+if [ $# -ne 1 ]; then 
+   echo "$0 [PATH|REPOSITORY|REPOSITORY_URL]"
+   echo "  $0 is a wrapper around ghq and code."
+   echo "  will clone the repo with ghq if not available yet."
+   exit 1
+fi
+
+if [ -d "$@" ] || [ -f "$@" ]; then
+  code "$@"
+  exit 0
+fi
+
+if ! type ghq >/dev/null 2>&1 ; then
+  code "$@"
+fi
+
+REPOLIST=($(ghq list -e -p "$@"))
+echo ${#REPOLIST[@]} repositories found.
+if [ ${#REPOLIST[@]} -eq 1 ]; then
+  code "${REPOLIST[0]}"
+  exit 0
+fi
+
+if [ ${#REPOLIST[@]} -eq 2 ]; then
+  multiple repositories found, please specify exactly one:
+  ghq list -e "$@"
+  exit 1
+fi
+
+if [ ${#REPOLIST[@]} -eq 0 ]; then
+  ghq get "$@"
+fi

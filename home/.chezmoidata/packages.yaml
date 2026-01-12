@@ -33,7 +33,6 @@ packages:
       - "firefox"
       - "spotify"
       - "slack"
-      - "headlamp"
       - "podman-desktop"
       - "visual-studio-code"
     mas:

@@ -19,6 +19,17 @@ if [ -n "$(echo ${HOME}/.config/zsh/zshrc.d/*(N))" ]; then
 fi
 unset rc
 
+if type complete >/dev/null 2>&1 ; then
+  if [ -d "${HOME}/.config/complete/" ]; then
+    for rc in ${HOME}/.config/complete/* ; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
+fi
+
 if type zellij >/dev/null 2>&1 ; then
     eval "$(zellij setup --generate-auto-start zsh)"
 fi
