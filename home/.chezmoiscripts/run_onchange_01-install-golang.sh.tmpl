@@ -1,9 +1,11 @@
 {{ if eq .clienttype "development" -}}
 #!/bin/bash
 
+{{ if lookPath "go" }}
 if command -v go 2>&1 > /dev/null ; then
 {{ range .packages.golang -}}
  go install {{ . | quote }}
 {{ end -}}
 fi
+{{ end -}}
 {{ end -}}

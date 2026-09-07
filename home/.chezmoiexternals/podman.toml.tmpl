@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "linux" -}}
+{{    if .inwsl -}}
+[".local/bin/podman"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "podman-container-tools/podman" "podman-remote-static-linux_amd64.tar.gz" | quote }}
+    path = "bin/podman-remote-static-linux_amd64"
+{{ end }}
+{{ end }}

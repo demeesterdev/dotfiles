@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-    
-if [ $# -ne 1 ]; then 
+
+if [ $# -ne 1 ]; then
    echo "$0 [PATH|REPOSITORY|REPOSITORY_URL]"
    echo "  $0 is a wrapper around ghq and code."
    echo "  will clone the repo with ghq if not available yet."
@@ -21,12 +21,16 @@ fi
 REPOLIST=($(ghq list -e -p "$@"))
 echo ${#REPOLIST[@]} repositories found.
 if [ ${#REPOLIST[@]} -eq 1 ]; then
-  code "${REPOLIST[0]}"
+  if [ -L "${REPOLIST[0]}" ]; then
+    code "$( readlink "${REPOLIST[0]}")"
+  else
+    code "${REPOLIST[0]}"
+  fi
   exit 0
 fi
 
 if [ ${#REPOLIST[@]} -eq 2 ]; then
-  multiple repositories found, please specify exactly one:
+  echo "multiple repositories found, please specify exactly one of:"
   ghq list -e "$@"
   exit 1
 fi

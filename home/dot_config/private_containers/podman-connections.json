@@ -1,0 +1,11 @@
+{
+  "Connection": {
+    "Connections": {
+      "podman-machine-default-root": {
+        "URI": "unix:///mnt/wsl/podman-sockets/podman-machine-default/podman-root.sock"
+      }
+    },
+    "Default": "podman-machine-default-root"
+  },
+  "Farm": {}
+}
