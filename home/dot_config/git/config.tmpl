@@ -21,6 +21,7 @@
 
 [init]
     templateDir = {{ joinPath .chezmoi.homeDir ".config/git/template" }}
+    defaultBranch = main
 
 {{ if eq .chezmoi.os "windows" -}}
 
